@@ -1,6 +1,8 @@
 import yaml
 import os
 import sys
+import subprocess
+import signal
 
 hosts = None
 with open(os.path.join(os.environ.get('HOME', ''), '.hihosts')) as file:
@@ -47,7 +49,12 @@ else:
 if len(matches) == 1:
     match = matches[0]
     command = match['command'] + ' ' + match['host']
-    print(command)
+    child = subprocess.Popen(command.split(' '))
+    try:
+        child.communicate()
+    except KeyboardInterrupt:
+        child.send_signal(signal.SIGINT)
+    sys.exit(child.returncode)
 else:
     for match in matches:
         print(match['host'])
