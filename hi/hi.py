@@ -52,6 +52,8 @@ def run(argv, hosts, groups, run=True):
                 break
             elif 'cron' in host and next((arg for arg in argv if 'cron' in arg), None) is None:
                 match = False
+            elif 'db' in host and next((arg for arg in argv if 'db' in arg), None) is None:
+                match = False
             else:
                 match = True
                 for arg in argv:
