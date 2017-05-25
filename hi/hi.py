@@ -62,6 +62,14 @@ def run(argv, hosts, groups, run=True):
 
     if len(matches) == 1:
         match = matches[0]
+
+        if 'group' in match and match['group'] in groups:
+            group = groups[match['group']]
+            
+            for key, value in group.items():
+                if key not in match:
+                    match[key] = value
+
         command = match['command'] + ' ' + match['host']
         if run:
             child = subprocess.Popen(command, shell=True)
