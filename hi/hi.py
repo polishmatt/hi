@@ -50,7 +50,7 @@ def run(argv, hosts, groups, run=True):
             if host == argv[0] and len(argv) == 1:
                 matches = [host_config]
                 break
-            elif 'cron' in host and 'cron' not in argv:
+            elif 'cron' in host and next((arg for arg in argv if 'cron' in arg), None) is None:
                 match = False
             else:
                 match = True
