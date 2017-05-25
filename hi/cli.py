@@ -14,6 +14,7 @@ except (ValueError, SystemError):
 )
 @click.argument('argv', nargs=-1)
 @click.version_option(version=version)
+@click.option('--run/--no-run', default=True)
 def cli(**kwargs):
     kwargs['hosts'] = hi.load_hosts()
     kwargs['groups'] = hi.load_groups()

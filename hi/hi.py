@@ -24,7 +24,7 @@ def load_groups():
         pass
     return groups
 
-def run(argv, hosts, groups):
+def run(argv, hosts, groups, run=True):
     rules = {
         'prod': lambda host: 'stg' not in host and 'dev' not in host
     }
@@ -63,14 +63,18 @@ def run(argv, hosts, groups):
     if len(matches) == 1:
         match = matches[0]
         command = match['command'] + ' ' + match['host']
-        child = subprocess.Popen(command.split(' '))
-        try:
-            child.communicate()
-        except KeyboardInterrupt:
-            child.send_signal(signal.SIGINT)
-        return child.returncode
+        if run:
+            child = subprocess.Popen(command.split(' '))
+            try:
+                child.communicate()
+            except KeyboardInterrupt:
+                child.send_signal(signal.SIGINT)
+            return child.returncode
+        else:
+            print(command)
     else:
         for match in matches:
             print(match['host'])
-        return 0
+
+    return 0
 
