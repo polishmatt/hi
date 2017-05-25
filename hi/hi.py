@@ -71,6 +71,9 @@ def run(argv, hosts, groups, run=True):
                     match[key] = value
 
         command = match['command'] + ' ' + match['host']
+        if 'args' in match:
+            command += ' ' + match['args']
+
         if run:
             child = subprocess.Popen(command, shell=True)
             try:
