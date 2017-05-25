@@ -25,6 +25,7 @@ def load_groups():
     return groups
 
 def run(argv, hosts, groups, run=True):
+    argv = list(argv)
     rules = {
         'prod': lambda host: 'stg' not in host and 'dev' not in host and '.' in host
     }
