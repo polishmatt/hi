@@ -46,7 +46,10 @@ def run(argv, hosts, groups, run=True):
         matches = []
         for host_config in hosts:
             host = host_config['host']
-            if 'cron' in host and 'cron' not in argv:
+            if host == argv[0] and len(argv) == 1:
+                matches = [host_config]
+                break
+            elif 'cron' in host and 'cron' not in argv:
                 match = False
             else:
                 match = True
