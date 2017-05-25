@@ -64,7 +64,7 @@ def run(argv, hosts, groups, run=True):
         match = matches[0]
         command = match['command'] + ' ' + match['host']
         if run:
-            child = subprocess.Popen(command.split(' '))
+            child = subprocess.Popen(command, shell=True)
             try:
                 child.communicate()
             except KeyboardInterrupt:
