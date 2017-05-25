@@ -26,7 +26,7 @@ def load_groups():
 
 def run(argv, hosts, groups, run=True):
     rules = {
-        'prod': lambda host: 'stg' not in host and 'dev' not in host
+        'prod': lambda host: 'stg' not in host and 'dev' not in host and '.' in host
     }
     rules['prd'] = rules['prod']
 
