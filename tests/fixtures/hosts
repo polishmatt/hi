@@ -1,0 +1,4 @@
+- host: command
+  command: ssh
+- host: group
+  group: group
