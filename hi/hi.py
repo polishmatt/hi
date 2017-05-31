@@ -6,19 +6,26 @@ import signal
 
 CONFIG_DIR = os.path.join(os.environ.get('HOME', ''), '.hi')
 
-def load_hosts():
+def log(message):
+    print(message)
+
+def load_hosts(file=None):
     hosts = []
+    if file is None:
+        file = os.path.join(CONFIG_DIR, 'hosts')
     try:
-        with open(os.path.join(CONFIG_DIR, 'hosts')) as file:
+        with open(file) as file:
             hosts = yaml.load(file.read())
     except IOError:
         pass
     return hosts
 
-def load_groups():
+def load_groups(file=None):
     groups = {}
+    if file is None:
+        file = os.path.join(CONFIG_DIR, 'groups')
     try:
-        with open(os.path.join(CONFIG_DIR, 'groups')) as file:
+        with open(file) as file:
             groups = yaml.load(file.read())
     except IOError:
         pass
@@ -88,10 +95,10 @@ def run(argv, hosts, groups, run=True):
                 child.send_signal(signal.SIGINT)
             return child.returncode
         else:
-            print(command)
+            log(command)
     else:
         for match in matches:
-            print(match['host'])
+            log(match['host'])
 
     return 0
 
