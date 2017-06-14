@@ -5,6 +5,14 @@ from tests import HiTest
 
 class CLITest(HiTest):
 
+    def test_exit_default(self):
+        with open(os.devnull, 'w') as FNULL:
+            subprocess.check_call(
+                ['python', '-mhi'],
+                stdout=FNULL,
+                stderr=subprocess.STDOUT
+            )
+
     def test_exit_norun(self):
         with open(os.devnull, 'w') as FNULL:
             subprocess.check_call(
@@ -32,3 +40,4 @@ class CLITest(HiTest):
             self.fail('received success exit code when error expected')
         except subprocess.CalledProcessError:
             pass
+
