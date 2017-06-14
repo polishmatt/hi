@@ -2,3 +2,10 @@
   command: ssh
 - host: group
   group: group
+- host: exit_norun
+  command: ":"
+- host: exit_success
+  command: ":"
+- host: exit_failure
+  command: ":"
+  args: "; (exit 1)"
