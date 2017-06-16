@@ -1,4 +1,3 @@
-import yaml
 import os
 import sys
 import subprocess
@@ -15,6 +14,7 @@ def load_hosts(file=None):
         file = os.path.join(CONFIG_DIR, 'hosts')
     try:
         with open(file) as file:
+            import yaml
             hosts = yaml.load(file.read())
     except IOError:
         pass
@@ -26,6 +26,7 @@ def load_groups(file=None):
         file = os.path.join(CONFIG_DIR, 'groups')
     try:
         with open(file) as file:
+            import yaml
             groups = yaml.load(file.read())
     except IOError:
         pass
