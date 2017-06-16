@@ -1,12 +1,14 @@
-#from unittest.mock import patch
-from mock import patch, call
+try:
+    from mock import patch, call
+except ImportError:
+    from unittest.mock import patch
 from tests import HiTest
 
 class RunTest(HiTest):
 
     @patch('hi.hi.log')
     def assert_run(self, argv, output, mock_log):
-        if not hasattr(argv, '__iter__'):
+        if isinstance(argv, str):
             argv = [argv]
 
         kwargs = {
@@ -17,10 +19,10 @@ class RunTest(HiTest):
         }
         self.hi.run(**kwargs)
 
-        if hasattr(output, '__iter__'):
-            mock_log.assert_has_calls([call(line) for line in output])
-        else:
+        if isinstance(output, str):
             mock_log.assert_called_once_with(output)
+        else:
+            mock_log.assert_has_calls([call(line) for line in output])
 
     def test_command(self):
         self.assert_run('command', 'start command')
@@ -35,5 +37,5 @@ class RunTest(HiTest):
         self.assert_run('exact', 'start exact')
 
     def test_multiple(self):
-        self.assert_run('multiple', ['multiple1', 'multiple2'])
+        self.assert_run('multiple', ('multiple1', 'multiple2'))
 
