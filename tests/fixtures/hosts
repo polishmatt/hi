@@ -1,7 +1,21 @@
 - host: command
-  command: ssh
+  command: start
 - host: group
   group: group
+- host: args
+  command: start
+  args: end
+
+- host: exact
+  command: start
+- host: exact2
+  command: start
+
+- host: multiple1
+  command: start
+- host: multiple2
+  command: start
+
 - host: exit_norun
   command: ":"
 - host: exit_success

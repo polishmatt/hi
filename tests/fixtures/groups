@@ -1,2 +1,3 @@
 group:
-  command: ssh
+  command: start
+  args: end
