@@ -36,19 +36,19 @@ def run(argv, hosts, groups, run=True, rules=True):
     argv = list(argv)
 
     if rules:
-        rules = {
+        arg_rules = {
             'prod': lambda host: 'stg' not in host and 'dev' not in host and '.' in host
         }
-        rules['prd'] = rules['prod']
+        arg_rules['prd'] = arg_rules['prod']
 
         # Pad 1-digit searches to avoid matching multiple digit numbers
         # 1 should match 01 but not 10
         def generate_digit_rule(digit):
             return lambda host: '0' + digit in host
         for digit in range(1, 10):
-            rules[str(digit)] = generate_digit_rule(str(digit))
+            arg_rules[str(digit)] = generate_digit_rule(str(digit))
     else:
-        rules = {}
+        arg_rules = {}
 
     if len(argv) == 0:
         matches = hosts
@@ -66,8 +66,8 @@ def run(argv, hosts, groups, run=True, rules=True):
             else:
                 match = True
                 for arg in argv:
-                    if arg in rules:
-                        match = rules[arg](host)
+                    if arg in arg_rules:
+                        match = arg_rules[arg](host)
                     elif arg not in host:
                         match = False
                     if not match:
