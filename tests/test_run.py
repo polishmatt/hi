@@ -72,3 +72,9 @@ class RunTest(HiTest):
     def test_missing_explicit_not_matched(self):
         self.assert_run('explicit', 'start explicit')
 
+    def test_explicit_no_rules(self):
+        self.assert_run({
+            'argv': ('explicit'),
+            'rules': False,
+        }, ('explicit', 'explicit-cron', 'explicit-db'))
+

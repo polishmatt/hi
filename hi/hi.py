@@ -37,7 +37,7 @@ def run(argv, hosts, groups, run=True, rules=True):
 
     if rules:
         arg_rules = {
-            'prod': lambda host: 'stg' not in host and 'dev' not in host and '.' in host
+            'prod': lambda host: 'stg' not in host and 'dev' not in host and '.' in host,
         }
         arg_rules['prd'] = arg_rules['prod']
 
@@ -47,8 +47,14 @@ def run(argv, hosts, groups, run=True, rules=True):
             return lambda host: '0' + digit in host
         for digit in range(1, 10):
             arg_rules[str(digit)] = generate_digit_rule(str(digit))
+
+        host_rules = {
+            'cron': lambda argv: next((arg for arg in argv if 'cron' in arg), None) is not None,
+            'db': lambda argv: next((arg for arg in argv if 'db' in arg), None) is not None,
+        }
     else:
         arg_rules = {}
+        host_rules = {}
 
     if len(argv) == 0:
         matches = hosts
@@ -59,12 +65,14 @@ def run(argv, hosts, groups, run=True, rules=True):
             if len(argv) == 1 and host == argv[0]:
                 matches = [host_config]
                 break
-            elif 'cron' in host and next((arg for arg in argv if 'cron' in arg), None) is None:
-                match = False
-            elif 'db' in host and next((arg for arg in argv if 'db' in arg), None) is None:
-                match = False
+
+            for rule_pattern, rule in host_rules.items():
+                if rule_pattern in host and not rule(argv):
+                    match = False
+                    break
             else:
                 match = True
+
                 for arg in argv:
                     if arg in arg_rules:
                         match = arg_rules[arg](host)
