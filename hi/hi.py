@@ -32,22 +32,23 @@ def load_groups(file=None):
         pass
     return groups
 
-def run(argv, hosts, groups, run=True):
+def run(argv, hosts, groups, run=True, pad=True):
     argv = list(argv)
     rules = {
         'prod': lambda host: 'stg' not in host and 'dev' not in host and '.' in host
     }
     rules['prd'] = rules['prod']
 
-    for index, arg in enumerate(argv):
+    if pad:
         # Pad 1-digit searches to avoid matching multiple digit numbers
         # 1 should match 01 but not 10
-        if len(arg) == 1:
-            try:
-                int(arg)
-                argv[index] = '0' + arg
-            except ValueError:
-                pass
+        for index, arg in enumerate(argv):
+            if len(arg) == 1:
+                try:
+                    int(arg)
+                    argv[index] = '0' + arg
+                except ValueError:
+                    pass
 
     if len(argv) == 0:
         matches = hosts

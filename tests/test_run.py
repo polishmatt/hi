@@ -7,16 +7,22 @@ from tests import HiTest
 class RunTest(HiTest):
 
     @patch('hi.hi.log')
-    def assert_run(self, argv, output, mock_log):
-        if isinstance(argv, str):
-            argv = [argv]
+    def assert_run(self, args, output, mock_log):
+        if not isinstance(args, dict):
+            if isinstance(args, str):
+                argv = [args]
+            else:
+                argv = args
+            args = {
+                'argv': argv,
+            }
 
         kwargs = {
             'hosts': self.hi.load_hosts(file=self.hosts_file),
             'groups': self.hi.load_groups(file=self.groups_file),
             'run': False,
-            'argv': argv,
-        }
+        } 
+        kwargs.update(args)
         self.hi.run(**kwargs)
 
         if isinstance(output, str):
@@ -40,10 +46,16 @@ class RunTest(HiTest):
         self.assert_run('multiple', ('multiple1', 'multiple2'))
 
     def test_prod(self):
-        self.assert_run(['example', 'prod'], 'start example.com')
+        self.assert_run(('example', 'prod'), 'start example.com')
 
     def test_pad_digit(self):
-        self.assert_run(['pad', '1'], 'start 01-pad')
+        self.assert_run(('pad', '1'), 'start 01-pad')
+
+    def test_no_pad(self):
+        self.assert_run({
+            'argv': ('pad', '1'),
+            'pad': False,
+        }, ('01-pad', '10-pad'))
 
     def test_cron(self):
         self.assert_run('cron', 'start explicit-cron')
