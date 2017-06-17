@@ -48,13 +48,19 @@ class RunTest(HiTest):
     def test_prod(self):
         self.assert_run(('example', 'prod'), 'start example.com')
 
+    def test_no_prod(self):
+        self.assert_run({
+            'argv': ('example', 'prod'),
+            'rules': False,
+        }, 'start example-prod')
+
     def test_pad_digit(self):
         self.assert_run(('pad', '1'), 'start 01-pad')
 
     def test_no_pad(self):
         self.assert_run({
             'argv': ('pad', '1'),
-            'pad': False,
+            'rules': False,
         }, ('01-pad', '10-pad'))
 
     def test_cron(self):

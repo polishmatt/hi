@@ -32,6 +32,8 @@
   command: start
 - host: example
   command: start
+- host: example-prod
+  command: start
 
 - host: 01-pad
   command: start
