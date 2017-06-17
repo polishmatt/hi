@@ -1,11 +1,9 @@
+from __future__ import absolute_import
 import click
 import sys
 
 import hi
-try:
-    from .config import version
-except (ValueError, SystemError):
-    from config import version
+from .config import version
 
 @click.command(
     context_settings={

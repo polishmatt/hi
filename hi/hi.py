@@ -1,10 +1,11 @@
+from __future__ import absolute_import
 import os
 import sys
 import subprocess
 import signal
 import importlib
 
-from rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
+from .rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
 
 CONFIG_DIR = os.path.join(os.environ.get('HOME', ''), '.hi')
 
