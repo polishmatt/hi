@@ -39,16 +39,12 @@ def run(argv, hosts, groups, run=True, pad=True):
     }
     rules['prd'] = rules['prod']
 
-    if pad:
-        # Pad 1-digit searches to avoid matching multiple digit numbers
-        # 1 should match 01 but not 10
-        for index, arg in enumerate(argv):
-            if len(arg) == 1:
-                try:
-                    int(arg)
-                    argv[index] = '0' + arg
-                except ValueError:
-                    pass
+    # Pad 1-digit searches to avoid matching multiple digit numbers
+    # 1 should match 01 but not 10
+    def generate_digit_rule(digit):
+        return lambda host: '0' + digit in host
+    for digit in range(1, 10):
+        rules[str(digit)] = generate_digit_rule(str(digit))
 
     if len(argv) == 0:
         matches = hosts
