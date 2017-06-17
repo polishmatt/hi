@@ -23,3 +23,25 @@
 - host: exit_failure
   command: ":"
   args: "; (exit 1)"
+
+- host: example.com
+  command: start
+- host: dev.example.com
+  command: start
+- host: stg.example.com
+  command: start
+- host: example
+  command: start
+
+- host: 01-pad
+  command: start
+- host: 10-pad
+  command: start
+
+- host: explicit
+  command: start
+- host: explicit-cron
+  command: start
+- host: explicit-db
+  command: start
+

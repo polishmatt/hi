@@ -39,3 +39,18 @@ class RunTest(HiTest):
     def test_multiple(self):
         self.assert_run('multiple', ('multiple1', 'multiple2'))
 
+    def test_prod(self):
+        self.assert_run(['example', 'prod'], 'start example.com')
+
+    def test_pad_digit(self):
+        self.assert_run(['pad', '1'], 'start 01-pad')
+
+    def test_cron(self):
+        self.assert_run('cron', 'start explicit-cron')
+
+    def test_db(self):
+        self.assert_run('db', 'start explicit-db')
+
+    def test_missing_explicit_not_matched(self):
+        self.assert_run('explicit', 'start explicit')
+
