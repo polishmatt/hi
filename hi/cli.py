@@ -18,6 +18,8 @@ except (ValueError, SystemError):
 @click.option('--hosts-file')
 @click.option('--groups-file')
 @click.option('--rules/--no-rules', default=True)
+@click.option('--arg-rule', multiple=True)
+@click.option('--host-rule', multiple=True)
 def cli(**kwargs):
     kwargs['hosts'] = hi.load_hosts(kwargs['hosts_file'])
     # Don't use the default groups file when using a custom hosts file to avoid unintended behavior/confusion

@@ -78,3 +78,17 @@ class RunTest(HiTest):
             'rules': False,
         }, ('explicit', 'explicit-cron', 'explicit-db'))
 
+    def test_arg_rule(self):
+        self.assert_run({
+            'argv': ('example', 'prod'),
+            'rules': False,
+            'arg_rule': ('hi.rules.prod',),
+        }, 'start example.com')
+
+    def test_host_rule(self):
+        self.assert_run({
+            'argv': ('cron',),
+            'rules': False,
+            'host_rule': ('hi.rules.cron',),
+        }, 'start explicit-cron')
+

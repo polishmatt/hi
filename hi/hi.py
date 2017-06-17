@@ -2,6 +2,8 @@ import os
 import sys
 import subprocess
 import signal
+import importlib
+
 from rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
 
 CONFIG_DIR = os.path.join(os.environ.get('HOME', ''), '.hi')
@@ -33,7 +35,22 @@ def load_groups(file=None):
         pass
     return groups
 
-def run(argv, hosts, groups, run=True, rules=True):
+def load_rule(rule):
+    last = rule.rfind('.')
+    package = rule[:last]
+    rule = rule[last + 1:]
+
+    try:
+        module = importlib.import_module(package)
+    except ImportError:
+        if package[:3] == 'hi.':
+            package = package[3:]
+            module = importlib.import_module(package)
+
+    return (rule, getattr(module, rule))
+
+
+def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
     argv = list(argv)
 
     if rules:
@@ -42,6 +59,12 @@ def run(argv, hosts, groups, run=True, rules=True):
     else:
         arg_rules = {}
         host_rules = {}
+    for rule in arg_rule:
+        (rule_pattern, rule_match) = load_rule(rule)
+        arg_rules[rule_pattern] = rule_match
+    for rule in host_rule:
+        (rule_pattern, rule_match) = load_rule(rule)
+        host_rules[rule_pattern] = rule_match
 
     if len(argv) == 0:
         matches = hosts
