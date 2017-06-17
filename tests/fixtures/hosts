@@ -40,7 +40,7 @@
 - host: 10-pad
   command: start
 
-- host: explicit
+- host: explicit-test
   command: start
 - host: explicit-cron
   command: start

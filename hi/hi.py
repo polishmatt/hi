@@ -90,6 +90,7 @@ def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
                         match = False
                     if not match:
                         break
+
             if match:
                 matches.append(host_config)
 

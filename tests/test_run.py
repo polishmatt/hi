@@ -10,7 +10,7 @@ class RunTest(HiTest):
     def assert_run(self, args, output, mock_log):
         if not isinstance(args, dict):
             if isinstance(args, str):
-                argv = [args]
+                argv = (args,)
             else:
                 argv = args
             args = {
@@ -70,13 +70,13 @@ class RunTest(HiTest):
         self.assert_run('db', 'start explicit-db')
 
     def test_missing_explicit_not_matched(self):
-        self.assert_run('explicit', 'start explicit')
+        self.assert_run('explicit', 'start explicit-test')
 
     def test_explicit_no_rules(self):
         self.assert_run({
-            'argv': ('explicit'),
+            'argv': ('explicit',),
             'rules': False,
-        }, ('explicit', 'explicit-cron', 'explicit-db'))
+        }, ('explicit-test', 'explicit-cron', 'explicit-db'))
 
     def test_arg_rule(self):
         self.assert_run({
