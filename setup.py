@@ -6,13 +6,16 @@ version = importlib.import_module('hi.config').version
 setup(
     name='hi',
     version=version,
-    description='',
-    long_description="",
+    description='A generic CLI for connecting humans to host interfaces.',
+    long_description="""
+A configurable shorthand for interfacing with external hosts.
+Arguments are individually matched against a set of specified hosts. If one result is found the command to interface with that host is run. Otherwise, all matching hosts are printed.
+    """,
     author='Matt Wisniewski',
     author_email='hicli@mattw.us',
     license='MIT',
     url='https://github.com/polishmatt/hi',
-    keywords=[''],
+    keywords=['hi', 'cli', 'utility', 'host', 'interface'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
