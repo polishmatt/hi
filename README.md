@@ -33,7 +33,7 @@ hi api
 This project is available on PyPI.
 
 ```
-pip install hi
+pip install hicli
 ```
 
 By default the hi CLI looks for configuration files at `$HOME/.hi`. Edit `$HOME/.hi/hosts` to add hosts using the [YAML](http://yaml.org) format.

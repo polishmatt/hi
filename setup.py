@@ -4,7 +4,7 @@ import importlib
 version = importlib.import_module('hi.config').version
 
 setup(
-    name='hi',
+    name='hicli',
     version=version,
     description='A generic CLI for connecting humans to host interfaces.',
     long_description="""
