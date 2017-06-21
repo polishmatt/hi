@@ -16,8 +16,6 @@ hi master db
 hi api
 ```
 
-[Why should I use this?)(#why-should-i-use-this)
-[Why shouldn't I use this?)(#why-shouldnt-i-use-this)
 [Getting started](#getting-started)
 [Advanced configuration](#advanced-configuration)
 
