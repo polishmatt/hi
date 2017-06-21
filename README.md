@@ -16,8 +16,8 @@ hi master db
 hi api
 ```
 
-[Getting started](#getting-started)
-[Advanced configuration](#advanced-configuration)
+* [Getting started](#getting-started)
+* [Advanced configuration](#advanced-configuration)
 
 ## Why should I use this?
 
