@@ -6,8 +6,7 @@ from tests import HiTest
 
 class RunTest(HiTest):
 
-    @patch('hi.hi.log')
-    def assert_run(self, args, output, mock_log):
+    def run_hi(self, args):
         if not isinstance(args, dict):
             if isinstance(args, str):
                 argv = (args,)
@@ -25,10 +24,23 @@ class RunTest(HiTest):
         kwargs.update(args)
         self.hi.run(**kwargs)
 
+    @patch('hi.logger.info')
+    @patch('hi.logger._log')
+    def assert_run(self, args, output, mock_log, mock_info):
+        self.run_hi(args)
+
         if isinstance(output, str):
-            mock_log.assert_called_once_with(output)
+            mock_info.assert_called_once_with(output)
         elif output is not None:
-            mock_log.assert_has_calls([call(line) for line in output])
+            mock_info.assert_has_calls([call(line) for line in output])
+
+    @patch('hi.logger.error')
+    @patch('hi.logger._log')
+    def assert_run_error(self, args, output, mock_log, mock_error):
+        self.run_hi(args)
+
+        for call in mock_error.call_args_list:
+            assert call[0][0].index(output) == 0
 
     def test_command(self):
         self.assert_run('command', 'start command')
@@ -46,18 +58,10 @@ class RunTest(HiTest):
         self.assert_run('nested_override', 'child nested_override replaced')
 
     def test_fail_circular_groups(self):
-        try:
-            self.assert_run('circular_group', None)
-            self.fail('Expected exception for invalid config')
-        except self.hi.exceptions.InvalidConfigException:
-            pass
+        self.assert_run_error('circular_group', 'Invalid config')
 
     def test_fail_undefined_group(self):
-        try:
-            self.assert_run('undefined_group', None)
-            self.fail('Expected exception for invalid config')
-        except self.hi.exceptions.InvalidConfigException:
-            pass
+        self.assert_run_error('undefined_group', 'Invalid config')
 
     def test_args(self):
         self.assert_run('args', 'start args end')
@@ -119,9 +123,5 @@ class RunTest(HiTest):
         self.assert_run('valid_alias', 'command')
 
     def test_invalid_alias(self):
-        try:
-            self.assert_run('invalid_alias', None)
-            self.fail('Expected exception for invalid config')
-        except self.hi.exceptions.InvalidConfigException:
-            pass
+        self.assert_run_error('invalid_alias', 'Invalid config')
 

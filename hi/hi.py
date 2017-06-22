@@ -5,12 +5,10 @@ import importlib
 
 from .rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
 from .host import Host
+from .log import logger
 from . import exceptions
 
 CONFIG_DIR = os.path.join(os.environ.get('HOME', ''), '.hi')
-
-def log(message):
-    print(message)
 
 def load_hosts(file=None):
     hosts = []
@@ -70,32 +68,37 @@ def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
     argv = list(argv)
     (arg_rules, host_rules) = load_rules(rules, arg_rule, host_rule)
 
-    if len(argv) == 0:
-        matches = [Host(host_config) for host_config in hosts]
-    else:
-        matches = []
-        for host_config in hosts:
-            host = Host(host_config)
-
-            if len(argv) == 1 and repr(host) == argv[0]:
-                matches = [host]
-                break
-
-            if host.is_match(argv, arg_rules, host_rules):
-                matches.append(host)
-
-    if len(matches) == 1:
-        match = matches[0]
-        match.collapse_groups(groups)
-        command = str(match)
-
-        if run:
-            return match.run()
+    try:
+        if len(argv) == 0:
+            matches = [Host(host_config) for host_config in hosts]
         else:
-            log(command)
-    else:
-        for match in matches:
-            log(repr(match))
+            matches = []
+            for host_config in hosts:
+                host = Host(host_config)
 
-    return 0
+                if len(argv) == 1 and repr(host) == argv[0]:
+                    matches = [host]
+                    break
+
+                if host.is_match(argv, arg_rules, host_rules):
+                    matches.append(host)
+
+        if len(matches) == 1:
+            match = matches[0]
+            match.collapse_groups(groups)
+            command = str(match)
+
+            if run:
+                return match.run()
+            else:
+                logger.info(command)
+        else:
+            for match in matches:
+                logger.info(repr(match))
+
+        return 0
+
+    except exceptions.HiException as exception:
+        logger.error(str(exception))
+        return 1
 
