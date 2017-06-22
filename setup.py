@@ -13,6 +13,7 @@ Arguments are individually matched against a set of specified hosts. If one resu
     """,
     author='Matt Wisniewski',
     author_email='hicli@mattw.us',
+    license='GPLv3',
     url='https://github.com/polishmatt/hi',
     keywords=['hi', 'cli', 'utility', 'host', 'interface'],
     classifiers=[
