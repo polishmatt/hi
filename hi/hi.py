@@ -71,7 +71,7 @@ def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
     (arg_rules, host_rules) = load_rules(rules, arg_rule, host_rule)
 
     if len(argv) == 0:
-        matches = hosts
+        matches = [Host(host_config) for host_config in hosts]
     else:
         matches = []
         for host_config in hosts:
