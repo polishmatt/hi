@@ -1,11 +1,10 @@
 from __future__ import absolute_import
 import os
 import sys
-import subprocess
-import signal
 import importlib
 
 from .rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
+from .host import Host
 from . import exceptions
 
 CONFIG_DIR = os.path.join(os.environ.get('HOME', ''), '.hi')
@@ -51,10 +50,7 @@ def load_rule(rule):
 
     return (rule, getattr(module, rule))
 
-
-def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
-    argv = list(argv)
-
+def load_rules(rules, arg_rule, host_rule):
     if rules:
         arg_rules = DEFAULT_ARG_RULES.copy()
         host_rules = DEFAULT_HOST_RULES.copy()
@@ -68,78 +64,38 @@ def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
         (rule_pattern, rule_match) = load_rule(rule)
         host_rules[rule_pattern] = rule_match
 
+    return (arg_rules, host_rules)
+
+def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
+    argv = list(argv)
+    (arg_rules, host_rules) = load_rules(rules, arg_rule, host_rule)
+
     if len(argv) == 0:
         matches = hosts
     else:
         matches = []
         for host_config in hosts:
-            host = host_config['host']
-            if len(argv) == 1 and host == argv[0]:
-                matches = [host_config]
+            host = Host(host_config)
+
+            if len(argv) == 1 and repr(host) == argv[0]:
+                matches = [host]
                 break
 
-            for rule_pattern, rule in host_rules.items():
-                if rule_pattern in host and not rule(argv):
-                    match = False
-                    break
-            else:
-                match = True
-
-                for arg in argv:
-                    if arg in arg_rules:
-                        match = arg_rules[arg](host)
-                    elif arg not in host:
-                        match = False
-                    if not match:
-                        break
-
-            if match:
-                matches.append(host_config)
+            if host.is_match(argv, arg_rules, host_rules):
+                matches.append(host)
 
     if len(matches) == 1:
         match = matches[0]
-
-        group = match
-        visited = {}
-        while group is not None:
-            if 'group' in group:
-                group_name = group['group']
-
-                if group_name not in groups:
-                    raise exceptions.InvalidConfigException("Undefined group '%s'" % (group_name))
-                elif group['group'] in visited:
-                    raise exceptions.InvalidConfigException("Circular group reference for host '%s'" % (match['host']))
-                else:
-                    visited[group_name] = True
-                    group = groups[group_name]
-                    
-                    for key, value in group.items():
-                        if key not in match:
-                            match[key] = value
-            else:
-                group = None
-
-        if 'args' in match and match.get('alias', False):
-            raise exceptions.InvalidConfigException("'args' property is not allowed for alias '%s'" % (match['host']))
-        elif match.get('alias', False):
-            command = match['command']
-        else:
-            command = match['command'] + ' ' + match['host']
-        if 'args' in match:
-            command += ' ' + match['args']
+        match.collapse_groups(groups)
+        command = str(match)
 
         if run:
-            child = subprocess.Popen(command, shell=True)
-            try:
-                child.communicate()
-            except KeyboardInterrupt:
-                child.send_signal(signal.SIGINT)
-            return child.returncode
+            return match.run()
         else:
             log(command)
     else:
         for match in matches:
-            log(match['host'])
+            log(repr(match))
 
     return 0
 
