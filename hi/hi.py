@@ -119,7 +119,12 @@ def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
             else:
                 group = None
 
-        command = match['command'] + ' ' + match['host']
+        if 'args' in match and match.get('alias', False):
+            raise exceptions.InvalidConfigException("'args' property is not allowed for alias '%s'" % (match['host']))
+        elif match.get('alias', False):
+            command = match['command']
+        else:
+            command = match['command'] + ' ' + match['host']
         if 'args' in match:
             command += ' ' + match['args']
 

@@ -60,3 +60,11 @@
 - host: explicit-db
   command: start
 
+- host: valid_alias
+  alias: True
+  command: command
+- host: invalid_alias
+  alias: True
+  command: command
+  args: args
+

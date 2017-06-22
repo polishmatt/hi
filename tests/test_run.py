@@ -27,7 +27,7 @@ class RunTest(HiTest):
 
         if isinstance(output, str):
             mock_log.assert_called_once_with(output)
-        else:
+        elif output is not None:
             mock_log.assert_has_calls([call(line) for line in output])
 
     def test_command(self):
@@ -48,12 +48,14 @@ class RunTest(HiTest):
     def test_fail_circular_groups(self):
         try:
             self.assert_run('circular_group', None)
+            self.fail('Expected exception for invalid config')
         except self.hi.exceptions.InvalidConfigException:
             pass
 
     def test_fail_undefined_group(self):
         try:
             self.assert_run('undefined_group', None)
+            self.fail('Expected exception for invalid config')
         except self.hi.exceptions.InvalidConfigException:
             pass
 
@@ -112,4 +114,14 @@ class RunTest(HiTest):
             'rules': False,
             'host_rule': ('hi.rules.cron',),
         }, 'start explicit-cron')
+
+    def test_valid_alias(self):
+        self.assert_run('valid_alias', 'command')
+
+    def test_invalid_alias(self):
+        try:
+            self.assert_run('invalid_alias', None)
+            self.fail('Expected exception for invalid config')
+        except self.hi.exceptions.InvalidConfigException:
+            pass
 
