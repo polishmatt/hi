@@ -1,3 +1,19 @@
 group:
   command: start
   args: end
+nested_child:
+  group: nested_parent
+nested_parent:
+  command: start
+  args: end
+nested_override_child:
+  group: nested_override_parent
+  command: child
+  args: replaced
+nested_override_parent:
+  command: start
+  args: end
+circular_group_1:
+  group: circular_group_2
+circular_group_2:
+  group: circular_group_1

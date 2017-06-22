@@ -21,7 +21,7 @@ class CLITest(HiTest):
                 stderr=subprocess.STDOUT
             )
 
-    def test_exit_success(self):
+    def test_exit_child_success(self):
         with open(os.devnull, 'w') as FNULL:
             subprocess.check_call(
                 ['python', '-mhi', '--hosts-file', self.hosts_file, 'exit_success'],
@@ -29,11 +29,23 @@ class CLITest(HiTest):
                 stderr=subprocess.STDOUT
             )
 
-    def test_exit_failure(self):
+    def test_exit_child_failure(self):
         try:
             with open(os.devnull, 'w') as FNULL:
                 subprocess.check_call(
                     ['python', '-mhi', '--hosts-file', self.hosts_file, 'exit_failure'],
+                    stdout=FNULL,
+                    stderr=subprocess.STDOUT
+                )
+            self.fail('received success exit code when error expected')
+        except subprocess.CalledProcessError:
+            pass
+
+    def test_exit_hi_failure(self):
+        try:
+            with open(os.devnull, 'w') as FNULL:
+                subprocess.check_call(
+                    ['python', '-mhi', '--hosts-file', self.hosts_file, 'undefined_group'],
                     stdout=FNULL,
                     stderr=subprocess.STDOUT
                 )

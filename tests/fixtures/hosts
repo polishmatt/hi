@@ -1,10 +1,23 @@
 - host: command
   command: start
-- host: group
-  group: group
 - host: args
   command: start
   args: end
+
+- host: group_command
+  group: group
+- host: group_override
+  group: group
+  command: child
+  args: replaced
+- host: nested_command
+  group: nested_child
+- host: nested_override
+  group: nested_override_child
+- host: circular_group
+  group: circular_group_1
+- host: undefined_group
+  group: undefined_group
 
 - host: exact
   command: start

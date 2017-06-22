@@ -53,7 +53,11 @@ def cli(**kwargs):
     del kwargs['hosts_file']
     del kwargs['groups_file']
 
-    sys.exit(hi.run(**kwargs))
+    try:
+        sys.exit(hi.run(**kwargs))
+    except hi.exceptions.HiException as exception:
+        click.echo(str(exception), err=True)
+        sys.exit(1)
 
 if __name__ == '__main__':
     cli()

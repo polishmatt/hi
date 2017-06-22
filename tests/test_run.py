@@ -34,7 +34,28 @@ class RunTest(HiTest):
         self.assert_run('command', 'start command')
 
     def test_group(self):
-        self.assert_run('group', 'start group end')
+        self.assert_run('group_command', 'start group_command end')
+
+    def test_group_override(self):
+        self.assert_run('group_override', 'child group_override replaced')
+
+    def test_nested_group(self):
+        self.assert_run('nested_command', 'start nested_command end')
+
+    def test_nested_group_override(self):
+        self.assert_run('nested_override', 'child nested_override replaced')
+
+    def test_fail_circular_groups(self):
+        try:
+            self.assert_run('circular_group', None)
+        except self.hi.exceptions.InvalidConfigException:
+            pass
+
+    def test_fail_undefined_group(self):
+        try:
+            self.assert_run('undefined_group', None)
+        except self.hi.exceptions.InvalidConfigException:
+            pass
 
     def test_args(self):
         self.assert_run('args', 'start args end')

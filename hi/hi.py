@@ -6,6 +6,7 @@ import signal
 import importlib
 
 from .rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
+from . import exceptions
 
 CONFIG_DIR = os.path.join(os.environ.get('HOME', ''), '.hi')
 
@@ -98,12 +99,25 @@ def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
     if len(matches) == 1:
         match = matches[0]
 
-        if 'group' in match and match['group'] in groups:
-            group = groups[match['group']]
-            
-            for key, value in group.items():
-                if key not in match:
-                    match[key] = value
+        group = match
+        visited = {}
+        while group is not None:
+            if 'group' in group:
+                group_name = group['group']
+
+                if group_name not in groups:
+                    raise exceptions.InvalidConfigException("Undefined group '%s'" % (group_name))
+                elif group['group'] in visited:
+                    raise exceptions.InvalidConfigException("Circular group reference for host '%s'" % (match['host']))
+                else:
+                    visited[group_name] = True
+                    group = groups[group_name]
+                    
+                    for key, value in group.items():
+                        if key not in match:
+                            match[key] = value
+            else:
+                group = None
 
         command = match['command'] + ' ' + match['host']
         if 'args' in match:
