@@ -21,7 +21,7 @@ class Host:
         if not self.config.get('alias', False):
             command += ' {host}'
 
-        if 'args' in self.config:
+        if 'args' in self.config and len(self.config['args']) > 0:
             command += ' ' + self.config['args']
 
         for variable, value in self.config.items():

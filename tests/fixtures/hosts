@@ -76,3 +76,18 @@
   command: '{var}'
   args: '{var}'
 
+- host: preset_ssh_default
+  group: ssh
+- host: preset_ssh_override
+  group: ssh
+  workdir: dir
+
+- host: preset_mysql_default
+  group: mysql
+- host: preset_mysql_override
+  group: mysql
+  user: root
+  password: root
+  port: 3307
+  args: ''
+

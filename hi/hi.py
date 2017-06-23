@@ -4,6 +4,7 @@ import sys
 import importlib
 
 from .rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
+from .group import presets
 from .host import Host
 from .log import logger
 from . import exceptions
@@ -67,6 +68,10 @@ def load_rules(rules, arg_rule, host_rule):
 def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
     argv = list(argv)
     (arg_rules, host_rules) = load_rules(rules, arg_rule, host_rule)
+
+    preset_groups = presets.copy()
+    preset_groups.update(groups)
+    groups = preset_groups
 
     try:
         if len(argv) == 0:

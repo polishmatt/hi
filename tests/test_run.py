@@ -131,3 +131,15 @@ class RunTest(HiTest):
     def test_variable_not_replaced(self):
         self.assert_run('variable_noreplace', '{var} variable_noreplace {var}')
 
+    def test_preset_ssh_default(self):
+        self.assert_run('preset_ssh_default', "ssh -t preset_ssh_default 'cd $HOME; bash -l'")
+
+    def test_preset_ssh_override(self):
+        self.assert_run('preset_ssh_override', "ssh -t preset_ssh_override 'cd dir; bash -l'")
+
+    def test_preset_mysql_default(self):
+        self.assert_run('preset_mysql_default', 'mysql -u$USER -p -P3306 -h preset_mysql_default -A')
+
+    def test_preset_mysql_override(self):
+        self.assert_run('preset_mysql_override', 'mysql -uroot -proot -P3307 -h preset_mysql_override')
+
