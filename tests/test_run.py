@@ -125,3 +125,9 @@ class RunTest(HiTest):
     def test_invalid_alias(self):
         self.assert_run_error('invalid_alias', 'Invalid config')
 
+    def test_variable_replace(self):
+        self.assert_run('variable_replace', 'val variable_replace val')
+
+    def test_variable_not_replaced(self):
+        self.assert_run('variable_noreplace', '{var} variable_noreplace {var}')
+

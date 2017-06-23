@@ -15,12 +15,17 @@ class Host:
     def __str__(self):
         if 'args' in self.config and self.config.get('alias', False):
             raise exceptions.InvalidConfigException("'args' property is not allowed for alias '%s'" % (repr(self)))
-        elif self.config.get('alias', False):
-            command = self.config['command']
-        else:
-            command = self.config['command'] + ' ' + self.config['host']
+
+        command = self.config['command']
+
+        if not self.config.get('alias', False):
+            command += ' {host}'
+
         if 'args' in self.config:
             command += ' ' + self.config['args']
+
+        for variable, value in self.config.items():
+            command = command.replace('{' + str(variable) + '}', str(value))
 
         return command
 

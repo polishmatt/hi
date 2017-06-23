@@ -68,3 +68,11 @@
   command: command
   args: args
 
+- host: variable_replace
+  var: val
+  command: '{var}'
+  args: '{var}'
+- host: variable_noreplace
+  command: '{var}'
+  args: '{var}'
+
