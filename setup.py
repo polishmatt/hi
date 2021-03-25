@@ -39,7 +39,7 @@ Arguments are individually matched against a set of specified hosts. If one resu
     ],
     install_requires=[
         'click==6.7',
-        'pyyaml==3.12'
+        'pyyaml==5.4'
     ],
     entry_points={
         'console_scripts': [
