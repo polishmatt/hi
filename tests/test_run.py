@@ -1,7 +1,4 @@
-try:
-    from mock import patch, call
-except ImportError:
-    from unittest.mock import patch
+from unittest.mock import patch
 from tests import HiTest
 
 class RunTest(HiTest):

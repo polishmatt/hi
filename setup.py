@@ -12,7 +12,7 @@ A configurable shorthand for interfacing with external hosts.
 Arguments are individually matched against a set of specified hosts. If one result is found the command to interface with that host is run. Otherwise, all matching hosts are printed.
     """,
     author='Matt Wisniewski',
-    author_email='hicli@mattw.us',
+    author_email='hicli@mattw.life',
     license='GPLv3',
     url='https://github.com/polishmatt/hi',
     keywords=['hi', 'cli', 'utility', 'host', 'interface'],
@@ -38,8 +38,8 @@ Arguments are individually matched against a set of specified hosts. If one resu
         'hi'
     ],
     install_requires=[
-        'click==6.7',
-        'pyyaml==3.12'
+        'click',
+        'pyyaml'
     ],
     entry_points={
         'console_scripts': [

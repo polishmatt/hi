@@ -2,12 +2,10 @@ language: python
 os:
     - linux
 python:
-    - '2.7'
-    - '3.3'
-    - '3.4'
-    - '3.5'
-    - '3.6'
-    - 3.7-dev
+    - '3.7'
+    - '3.8'
+    - '3.9'
+    - '3.10'
     - nightly
     - pypy
 cache: python
@@ -19,6 +17,5 @@ notifications:
 matrix:
     fast_finish: true
     allow_failures:
-        - python: 3.7-dev
         - python: nightly
         - python: pypy
