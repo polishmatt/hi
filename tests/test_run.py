@@ -21,8 +21,8 @@ class RunTest(HiTest):
         kwargs.update(args)
         self.hi.run(**kwargs)
 
-    @patch('hi.logger.info')
-    @patch('hi.logger._log')
+    @patch('hicli.logger.info')
+    @patch('hicli.logger._log')
     def assert_run(self, args, output, mock_log, mock_info):
         self.run_hi(args)
 
@@ -31,8 +31,8 @@ class RunTest(HiTest):
         elif output is not None:
             mock_info.assert_has_calls([call(line) for line in output])
 
-    @patch('hi.logger.error')
-    @patch('hi.logger._log')
+    @patch('hicli.logger.error')
+    @patch('hicli.logger._log')
     def assert_run_error(self, args, output, mock_log, mock_error):
         self.run_hi(args)
 
@@ -106,14 +106,14 @@ class RunTest(HiTest):
         self.assert_run({
             'argv': ('example', 'prod'),
             'rules': False,
-            'arg_rule': ('hi.rules.prod',),
+            'arg_rule': ('hicli.rules.prod',),
         }, 'start example.com')
 
     def test_host_rule(self):
         self.assert_run({
             'argv': ('cron',),
             'rules': False,
-            'host_rule': ('hi.rules.cron',),
+            'host_rule': ('hicli.rules.cron',),
         }, 'start explicit-cron')
 
     def test_valid_alias(self):
