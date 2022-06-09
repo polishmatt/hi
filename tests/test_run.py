@@ -21,8 +21,8 @@ class RunTest(HiTest):
         kwargs.update(args)
         self.hi.run(**kwargs)
 
-    @patch('hicli.logger.info')
-    @patch('hicli.logger._log')
+    @patch('hicli.log.logger.info')
+    @patch('hicli.log.logger._log')
     def assert_run(self, args, output, mock_log, mock_info):
         self.run_hi(args)
 
@@ -31,8 +31,8 @@ class RunTest(HiTest):
         elif output is not None:
             mock_info.assert_has_calls([call(line) for line in output])
 
-    @patch('hicli.logger.error')
-    @patch('hicli.logger._log')
+    @patch('hicli.log.logger.error')
+    @patch('hicli.log.logger._log')
     def assert_run_error(self, args, output, mock_log, mock_error):
         self.run_hi(args)
 
