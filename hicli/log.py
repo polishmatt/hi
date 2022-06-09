@@ -1,9 +1,11 @@
 import logging
 import sys
 
+
 class InfoFilter(logging.Filter):
-  def filter(self, record):
-      return record.levelno in (logging.DEBUG, logging.INFO)
+    def filter(self, record):
+        return record.levelno in (logging.DEBUG, logging.INFO)
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -16,4 +18,3 @@ logger.addHandler(handler)
 handler = logging.StreamHandler()
 handler.setLevel(logging.WARNING)
 logger.addHandler(handler)
-

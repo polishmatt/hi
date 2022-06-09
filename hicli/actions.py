@@ -1,7 +1,7 @@
-from __future__ import absolute_import
 import os
 import sys
 import importlib
+import yaml
 
 from .rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
 from .group import presets
@@ -9,45 +9,47 @@ from .host import Host
 from .log import logger
 from . import exceptions
 
-CONFIG_DIR = os.path.join(os.environ.get('HOME', ''), '.hi')
+CONFIG_DIR = os.path.join(os.environ.get("HOME", ""), ".hi")
+
 
 def load_hosts(file=None):
     hosts = []
     if file is None:
-        file = os.path.join(CONFIG_DIR, 'hosts')
+        file = os.path.join(CONFIG_DIR, "hosts")
     try:
         with open(file) as file:
-            import yaml
-            hosts = yaml.load(file.read())
+            hosts = yaml.safe_load(file.read())
     except IOError:
         pass
     return hosts
 
+
 def load_groups(file=None):
     groups = {}
     if file is None:
-        file = os.path.join(CONFIG_DIR, 'groups')
+        file = os.path.join(CONFIG_DIR, "groups")
     try:
         with open(file) as file:
-            import yaml
-            groups = yaml.load(file.read())
+            groups = yaml.safe_load(file.read())
     except IOError:
         pass
     return groups
 
+
 def load_rule(rule):
-    last = rule.rfind('.')
+    last = rule.rfind(".")
     package = rule[:last]
-    rule = rule[last + 1:]
+    rule = rule[last + 1 :]
 
     try:
         module = importlib.import_module(package)
     except ImportError:
-        if package[:3] == 'hi.':
+        if package[:3] == "hi.":
             package = package[3:]
             module = importlib.import_module(package)
 
     return (rule, getattr(module, rule))
+
 
 def load_rules(rules, arg_rule, host_rule):
     if rules:
@@ -64,6 +66,7 @@ def load_rules(rules, arg_rule, host_rule):
         host_rules[rule_pattern] = rule_match
 
     return (arg_rules, host_rules)
+
 
 def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
     argv = list(argv)
@@ -106,4 +109,3 @@ def run(argv, hosts, groups, run=True, rules=True, arg_rule=(), host_rule=()):
     except exceptions.HiException as exception:
         logger.error(str(exception))
         return 1
-
