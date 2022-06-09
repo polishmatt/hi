@@ -3,12 +3,10 @@ from tests import HiTest
 
 class ImportTest(HiTest):
     def test_import(self):
-        expected = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'hi'))
+        expected = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'hicli'))
         expected = [
             os.path.join(expected, 'hi.py'),
-            os.path.join(expected, 'hi.pyc'),
-            os.path.join(expected, '__init__.py'),
-            os.path.join(expected, '__init__.pyc')
+            os.path.join(expected, '__init__.py')
         ]
         found = self.hi.__file__
         if found not in expected:
