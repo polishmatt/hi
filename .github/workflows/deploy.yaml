@@ -1,6 +1,8 @@
 name: Deploy
 
-on: [push]
+on:
+  release:
+    types: [created]
 
 jobs:
   deploy:
