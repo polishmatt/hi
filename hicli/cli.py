@@ -2,7 +2,7 @@ import click
 import sys
 
 from .actions import load_hosts, load_groups, run
-from .config import version
+from . import __version__
 
 @click.command(
     help="""
@@ -35,7 +35,7 @@ Host rules are applied based on the host. When the name of a specified host rule
     }
 )
 @click.argument('argv', nargs=-1)
-@click.version_option(version=version)
+@click.version_option(version=__version__)
 @click.option('--run/--no-run', default=True, help='When enabled, run the command for a host when one match is found.')
 @click.option('--hosts-file', help='File to load hosts from. Defaults to $HOME/.hi/hosts.')
 @click.option('--groups-file', help='File to load host groups from. Defaults to $HOME/.hi/groups.')
