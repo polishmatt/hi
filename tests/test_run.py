@@ -14,12 +14,12 @@ class RunTest(HiTest):
             }
 
         kwargs = {
-            'hosts': self.hi.actions.load_hosts(file=self.hosts_file),
-            'groups': self.hi.actions.load_groups(file=self.groups_file),
+            'hosts': self.actions.load_hosts(file=self.hosts_file),
+            'groups': self.actions.load_groups(file=self.groups_file),
             'run': False,
         } 
         kwargs.update(args)
-        self.hi.actions.run(**kwargs)
+        self.actions.run(**kwargs)
 
     @patch('hicli.log.logger.info')
     @patch('hicli.log.logger._log')
