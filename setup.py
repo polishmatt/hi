@@ -1,11 +1,8 @@
 from setuptools import setup
 import importlib
 
-version = importlib.import_module('hi.config').version
-
 setup(
     name='hicli',
-    version=version,
     description='A generic CLI for connecting humans to host interfaces.',
     long_description="""
 A configurable shorthand for interfacing with external hosts.
@@ -15,7 +12,7 @@ Arguments are individually matched against a set of specified hosts. If one resu
     author_email='hicli@mattw.life',
     license='GPLv3',
     url='https://github.com/polishmatt/hi',
-    keywords=['hi', 'cli', 'utility', 'host', 'interface'],
+    keywords=['hi', 'cli', 'hicli', 'utility', 'host', 'interface'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -33,7 +30,7 @@ Arguments are individually matched against a set of specified hosts. If one resu
     ],
     platforms=['unix','linux'],
     packages=[
-        'hi'
+        'hicli'
     ],
     install_requires=[
         'click',
@@ -41,7 +38,7 @@ Arguments are individually matched against a set of specified hosts. If one resu
     ],
     entry_points={
         'console_scripts': [
-            'hi = hi.cli:cli'
+            'hi = hicli.cli:cli'
         ],
     },
 )
