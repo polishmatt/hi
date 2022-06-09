@@ -2,6 +2,7 @@ from __future__ import absolute_import
 import os
 import sys
 import importlib
+import yaml
 
 from .rules import DEFAULT_ARG_RULES, DEFAULT_HOST_RULES
 from .group import presets
@@ -17,8 +18,7 @@ def load_hosts(file=None):
         file = os.path.join(CONFIG_DIR, 'hosts')
     try:
         with open(file) as file:
-            import yaml
-            hosts = yaml.load(file.read())
+            hosts = yaml.safe_load(file.read())
     except IOError:
         pass
     return hosts
@@ -29,8 +29,7 @@ def load_groups(file=None):
         file = os.path.join(CONFIG_DIR, 'groups')
     try:
         with open(file) as file:
-            import yaml
-            groups = yaml.load(file.read())
+            groups = yaml.safe_load(file.read())
     except IOError:
         pass
     return groups
