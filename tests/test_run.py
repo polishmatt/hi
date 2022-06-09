@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, call
 from tests import HiTest
 
 class RunTest(HiTest):
