@@ -9,7 +9,7 @@ class CLITest(HiTest):
         with open(os.devnull, 'w') as FNULL:
             subprocess.check_call(
                 ['python', '-mhicli', '--hosts-file', self.hosts_file],
-                stdout=FNULL,
+                stdout=subprocess.STDOUT,
                 stderr=subprocess.STDOUT
             )
 
@@ -17,7 +17,7 @@ class CLITest(HiTest):
         with open(os.devnull, 'w') as FNULL:
             subprocess.check_call(
                 ['python', '-mhicli', '--hosts-file', self.hosts_file, '--no-run', 'exit_norun'],
-                stdout=FNULL,
+                stdout=subprocess.STDOUT,
                 stderr=subprocess.STDOUT
             )
 
@@ -25,7 +25,7 @@ class CLITest(HiTest):
         with open(os.devnull, 'w') as FNULL:
             subprocess.check_call(
                 ['python', '-mhicli', '--hosts-file', self.hosts_file, 'exit_success'],
-                stdout=FNULL,
+                stdout=subprocess.STDOUT,
                 stderr=subprocess.STDOUT
             )
 
@@ -34,7 +34,7 @@ class CLITest(HiTest):
             with open(os.devnull, 'w') as FNULL:
                 subprocess.check_call(
                     ['python', '-mhicli', '--hosts-file', self.hosts_file, 'exit_failure'],
-                    stdout=FNULL,
+                    stdout=subprocess.STDOUT,
                     stderr=subprocess.STDOUT
                 )
             self.fail('received success exit code when error expected')
@@ -46,7 +46,7 @@ class CLITest(HiTest):
             with open(os.devnull, 'w') as FNULL:
                 subprocess.check_call(
                     ['python', '-mhicli', '--hosts-file', self.hosts_file, 'undefined_group'],
-                    stdout=FNULL,
+                    stdout=subprocess.STDOUT,
                     stderr=subprocess.STDOUT
                 )
             self.fail('received success exit code when error expected')
