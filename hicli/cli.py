@@ -1,7 +1,7 @@
 import click
 import sys
 
-import hi
+from .actions import load_hosts, load_groups, run
 from .config import version
 
 @click.command(
@@ -43,16 +43,16 @@ Host rules are applied based on the host. When the name of a specified host rule
 @click.option('--arg-rule', multiple=True, help='Specify an importable python function to be used as a rule for matching a host. Multiple are allowed. See Rules for more information.')
 @click.option('--host-rule', multiple=True, help='Specify an importable python function to be used as a rule for matching a host. Multiple are allowed. See Rules for more information')
 def cli(**kwargs):
-    kwargs['hosts'] = hi.load_hosts(kwargs['hosts_file'])
+    kwargs['hosts'] = load_hosts(kwargs['hosts_file'])
     # Don't use the default groups file when using a custom hosts file to avoid unintended behavior/confusion
     if kwargs['hosts_file'] is not None and kwargs['groups_file'] is None:
         kwargs['groups'] = {}
     else:
-        kwargs['groups'] = hi.load_groups(kwargs['groups_file'])
+        kwargs['groups'] = load_groups(kwargs['groups_file'])
     del kwargs['hosts_file']
     del kwargs['groups_file']
 
-    sys.exit(hi.run(**kwargs))
+    sys.exit(run(**kwargs))
 
 if __name__ == '__main__':
     cli()
