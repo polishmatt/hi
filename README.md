@@ -1,7 +1,5 @@
 # hi
 
-[![Build Status](https://travis-ci.org/polishmatt/hi.svg?branch=master)](https://travis-ci.org/polishmatt/hi)
-
 A generic CLI for connecting humans to host interfaces.
 
 Why remember or write an alias for
